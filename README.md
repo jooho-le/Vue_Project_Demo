@@ -47,5 +47,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   2) `npm run serve` → `http://localhost:8080`
 
 ## 동작 스크린샷
-`docs/vue.png`
-
+![동작 스크린샷](docs/vue.png)
