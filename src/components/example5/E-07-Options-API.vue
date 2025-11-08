@@ -10,81 +10,41 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'E07OptionsApi',
+<script setup lang="ts">
+import { ref, computed, watch, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted, toRef } from 'vue'
 
-  props: {
-    title: {
-      type: String,
-      default: 'User Information'
-    }
-  },
+const props = withDefaults(defineProps<{ title?: string }>(), { title: 'User Information' })
 
-  data() {
-    return {
-      firstName: 'John',
-      lastName: 'Doe',
-      greetCount: 0,
-      message: ''
-    };
-  },
+const firstName = ref('John')
+const lastName = ref('Doe')
+const greetCount = ref(0)
+const message = ref('')
 
-  computed: {
-    fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    }
-  },
+const fullName = computed(() => `${firstName.value} ${lastName.value}`)
 
-  methods: {
-    greet() {
-      this.greetCount++;
-      this.message = `Hello, ${this.fullName}!`;
-    },
-    resetGreetCount() {
-      this.greetCount = 0;
-    }
-  },
+const greet = () => {
+  greetCount.value++
+  message.value = `Hello, ${fullName.value}!`
+}
 
-  watch: {
-    greetCount(newValue, oldValue) {
-      console.log(`Greet count changed from ${oldValue} to ${newValue}`);
-      if (newValue >= 3) {
-        this.message = "That's enough greetings for now!";
-      }
-    }
-  },
+const resetGreetCount = () => {
+  greetCount.value = 0
+}
 
-  beforeCreate() {
-    console.log('beforeCreate hook');
-  },
-
-  created() {
-    console.log('created hook');
-  },
-
-  beforeMount() {
-    console.log('beforeMount hook');
-  },
-
-  mounted() {
-    console.log('mounted hook');
-  },
-
-  beforeUpdate() {
-    console.log('beforeUpdate hook');
-  },
-
-  updated() {
-    console.log('updated hook');
-  },
-
-  beforeUnmount() {
-    console.log('beforeUnmount hook');
-  },
-
-  unmounted() {
-    console.log('unmounted hook');
+watch(greetCount, (newValue, oldValue) => {
+  console.log(`Greet count changed from ${oldValue} to ${newValue}`)
+  if (newValue >= 3) {
+    message.value = "That's enough greetings for now!"
   }
-};
+})
+
+onBeforeMount(() => console.log('beforeMount hook'))
+onMounted(() => console.log('mounted hook'))
+onBeforeUpdate(() => console.log('beforeUpdate hook'))
+onUpdated(() => console.log('updated hook'))
+onBeforeUnmount(() => console.log('beforeUnmount hook'))
+onUnmounted(() => console.log('unmounted hook'))
+
+// 템플릿에서 사용할 title은 toRef로 노출(구조분해 금지 규칙 대응)
+const title = toRef(props, 'title')
 </script>
